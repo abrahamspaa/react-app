@@ -1,7 +1,11 @@
 import { Route, Link } from "react-router-dom";
-import routeA from './route-a/component';
-import routeB from './route-b/component';
-import React, { Component } from 'react';
+import React, { lazy, Component, Suspense } from 'react';
+
+/* eslint-disable import/first */
+const routeA = lazy(() => import('./route-a/component'));
+/* eslint-disable import/first */
+const routeB = lazy(() => import('./route-b/component'));
+
 import './dashboard.css';
 import {
   Collapse,
@@ -65,8 +69,12 @@ class App extends Component {
           </Collapse>
         </Navbar>
 
-        <Route exact path="/routeA" component={routeA} />
-        <Route exact path="/routeB" component={routeB} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Route exact path="/routeA" component={routeA} />
+        </Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Route exact path="/routeB" component={routeB} />
+        </Suspense>
       </div>
     );
   }
